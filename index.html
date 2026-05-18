@@ -32,11 +32,11 @@
   .container { max-width: 800px; margin: 0 auto; padding: 32px 24px; }
   .item {
     display: grid;
-    grid-template-columns: 40px 1fr 120px;
-    gap: 16px;
+    grid-template-columns: 36px 1fr;
+    gap: 14px;
     align-items: start;
-    padding: 20px;
-    margin-bottom: 12px;
+    padding: 18px 20px;
+    margin-bottom: 10px;
     background: #161b22;
     border: 1px solid #21262d;
     border-radius: 8px;
@@ -45,17 +45,40 @@
     transition: border-color 0.2s, background 0.2s;
   }
   .item:hover { border-color: #58a6ff; background: #1c2129; }
-  .num { color: #484f58; font-size: 14px; font-weight: 700; font-family: monospace; }
-  .cn { font-size: 16px; color: #e6edf3; line-height: 1.5; font-weight: 500; }
-  .en { font-size: 12px; color: #8b949e; margin-top: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .meta { display: flex; align-items: center; justify-content: flex-end; }
-  .source {
+  .num {
+    color: #30363d;
+    font-size: 13px;
+    font-weight: 700;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    padding-top: 2px;
+  }
+  .cn { font-size: 15px; color: #e6edf3; line-height: 1.6; font-weight: 500; }
+  .en {
+    font-size: 12px;
+    color: #8b949e;
+    margin-top: 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  .source-tag {
     font-size: 11px;
     color: #58a6ff;
-    background: #1f2a3a;
+    background: rgba(88,166,255,0.12);
     padding: 2px 8px;
     border-radius: 4px;
-    white-space: nowrap;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+  .time {
+    font-size: 11px;
+    color: #484f58;
   }
   footer {
     text-align: center;
@@ -66,9 +89,9 @@
     margin-top: 40px;
   }
   @media (max-width: 600px) {
-    .item { grid-template-columns: 30px 1fr; }
-    .meta { display: none; }
+    .item { padding: 14px 16px; }
     .container { padding: 16px; }
+    .cn { font-size: 14px; }
   }
 </style>
 </head>
@@ -81,51 +104,56 @@
     <a class="item" href="https://crates.io/crates/zerostack/1.0.0" target="_blank" rel="noopener">
       <span class="num">01</span>
       <div class="content">
-        <p class="cn">开源Unix风格编码代理，纯Rust实现</p>
+        <p class="cn">纯Rust构建的Unix风格编码智能体发布</p>
         <p class="en">Zerostack – A Unix-inspired coding agent written in pure Rust</p>
-      </div>
-      <div class="meta">
-        <span class="source">Hacker News</span>
+        <div class="info">
+          <span class="source-tag">HN</span>
+          <span class="time">⏱ 昨天</span>
+        </div>
       </div>
     </a>
     <a class="item" href="https://openai.com/index/malta-chatgpt-plus-partnership/" target="_blank" rel="noopener">
       <span class="num">02</span>
       <div class="content">
-        <p class="cn">OpenAI与马耳他政府合作，向全体公民提供ChatGPT Plus</p>
+        <p class="cn">OpenAI与马耳他政府合作向全体公民提供ChatGPT Plus</p>
         <p class="en">OpenAI and Government of Malta partner to roll out ChatGPT Plus to all citizens</p>
-      </div>
-      <div class="meta">
-        <span class="source">Hacker News</span>
+        <div class="info">
+          <span class="source-tag">HN</span>
+          <span class="time">⏱ 昨天</span>
+        </div>
       </div>
     </a>
     <a class="item" href="https://github.com/MinishLab/semble" target="_blank" rel="noopener">
       <span class="num">03</span>
       <div class="content">
-        <p class="cn">代码搜索代理Semble，比grep节省98%令牌</p>
+        <p class="cn">新工具Semble：比grep少用98%令牌的代码搜索</p>
         <p class="en">Show HN: Semble – Code search for agents that uses 98% fewer tokens than grep</p>
-      </div>
-      <div class="meta">
-        <span class="source">Hacker News</span>
+        <div class="info">
+          <span class="source-tag">HN</span>
+          <span class="time">⏱ 14小时前</span>
+        </div>
       </div>
     </a>
     <a class="item" href="https://www.jdhodges.com/blog/thinkpad-history/" target="_blank" rel="noopener">
       <span class="num">04</span>
       <div class="content">
-        <p class="cn">ThinkPad历史：从IBM便当盒到联想AI工作站</p>
+        <p class="cn">ThinkPad从IBM到联想AI工作站的历史回顾</p>
         <p class="en">The History of ThinkPad: From IBM’s Bento Box to Lenovo’s AI Workstations</p>
-      </div>
-      <div class="meta">
-        <span class="source">Hacker News</span>
+        <div class="info">
+          <span class="source-tag">HN</span>
+          <span class="time">⏱ 8小时前</span>
+        </div>
       </div>
     </a>
     <a class="item" href="https://www.theverge.com/ai-artificial-intelligence/644853/pew-gallup-data-americans-dont-trust-ai" target="_blank" rel="noopener">
       <span class="num">05</span>
       <div class="content">
-        <p class="cn">多数美国人不信任AI及其管理者</p>
+        <p class="cn">调查显示多数美国人不信任AI及其管理者</p>
         <p class="en">Most Americans don't trust AI – or the people in charge of it (2025)</p>
-      </div>
-      <div class="meta">
-        <span class="source">Hacker News</span>
+        <div class="info">
+          <span class="source-tag">HN</span>
+          <span class="time">⏱ 4小时前</span>
+        </div>
       </div>
     </a>
     <a class="item" href="https://www.theverge.com/ai-artificial-intelligence/932203/university-of-arizona-students-boo-eric-schmidt-ai-commencement" target="_blank" rel="noopener">
@@ -133,19 +161,21 @@
       <div class="content">
         <p class="cn">亚利桑那大学学生嘘声反对Eric Schmidt的AI鼓吹</p>
         <p class="en">University of Arizona students boo Eric Schmidt's AI cheerleading</p>
-      </div>
-      <div class="meta">
-        <span class="source">Hacker News</span>
+        <div class="info">
+          <span class="source-tag">HN</span>
+          <span class="time">⏱ 11小时前</span>
+        </div>
       </div>
     </a>
     <a class="item" href="https://github.com/ShurikenTrade/shuriken-skills" target="_blank" rel="noopener">
       <span class="num">07</span>
       <div class="content">
-        <p class="cn">带安全护栏的智能交易代理系统</p>
+        <p class="cn">带安全护栏的智能体交易系统发布</p>
         <p class="en">Agentic Trading with Safe Guardrails</p>
-      </div>
-      <div class="meta">
-        <span class="source">Hacker News</span>
+        <div class="info">
+          <span class="source-tag">HN</span>
+          <span class="time">⏱ 17小时前</span>
+        </div>
       </div>
     </a>
     <a class="item" href="https://mainichi.jp/english/articles/20260511/p2a/00m/0sc/015000c" target="_blank" rel="noopener">
@@ -153,9 +183,10 @@
       <div class="content">
         <p class="cn">日本成功测试5马赫发动机，目标2小时飞抵美国</p>
         <p class="en">Japan Team Successfully Test Engine for Mach 5 Aircraft, Eyeing 2HR Trip to US</p>
-      </div>
-      <div class="meta">
-        <span class="source">Hacker News</span>
+        <div class="info">
+          <span class="source-tag">HN</span>
+          <span class="time">⏱ 9小时前</span>
+        </div>
       </div>
     </a>
     <a class="item" href="https://anarc.at/blog/2026-05-16-four-horsemen/" target="_blank" rel="noopener">
@@ -163,9 +194,10 @@
       <div class="content">
         <p class="cn">分析LLM末日的四大威胁因素</p>
         <p class="en">The Four Horsemen of the LLM Apocalypse</p>
-      </div>
-      <div class="meta">
-        <span class="source">Hacker News</span>
+        <div class="info">
+          <span class="source-tag">HN</span>
+          <span class="time">⏱ 10小时前</span>
+        </div>
       </div>
     </a>
 </main>
