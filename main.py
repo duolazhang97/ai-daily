@@ -68,8 +68,9 @@ def fetch_hn_top():
                     {
                         "title": item.get("title", ""),
                         "url": item.get("url", f"https://news.ycombinator.com/item?id={sid}"),
-                        "source": "Hacker News",
+                        "source": "HN",
                         "score": item.get("score", 0),
+                        "time": item.get("time", 0),  # Unix timestamp
                     }
                 )
             if len(candidates) >= 30:
@@ -100,8 +101,9 @@ def fetch_reddit(subreddits):
                     {
                         "title": data["title"],
                         "url": f"https://www.reddit.com{data['permalink']}",
-                        "source": f"Reddit r/{sub}",
+                        "source": f"r/{sub}",
                         "score": data.get("score", 0),
+                        "time": data.get("created_utc", 0),
                     }
                 )
         except Exception:
@@ -183,6 +185,21 @@ def process_with_llm(articles):
 
 
 # ── HTML 生成 ─────────────────────────────────────────
+def relative_time(ts):
+    """Unix 时间戳 → 相对时间字符串"""
+    if not ts:
+        return ""
+    delta = time.time() - ts
+    if delta < 3600:
+        return f"{int(delta // 60)}分钟前"
+    elif delta < 86400:
+        return f"{int(delta // 3600)}小时前"
+    elif delta < 172800:
+        return "昨天"
+    else:
+        return f"{int(delta // 86400)}天前"
+
+
 def generate_html(results, articles):
     """生成最终 HTML"""
     now = datetime.now(LOCAL_TZ)
@@ -197,15 +214,18 @@ def generate_html(results, articles):
         if not a:
             continue
         num = f"{i + 1:02d}"
+        t = relative_time(a.get("time", 0))
+        time_tag = f'<span class="time">⏱ {t}</span>' if t else ""
         cards.append(
             f"""    <a class="item" href="{a['url']}" target="_blank" rel="noopener">
       <span class="num">{num}</span>
       <div class="content">
         <p class="cn">{r['cn_summary']}</p>
         <p class="en">{r.get('en_title', a['title'])}</p>
-      </div>
-      <div class="meta">
-        <span class="source">{a['source']}</span>
+        <div class="info">
+          <span class="source-tag">{a['source']}</span>
+          {time_tag}
+        </div>
       </div>
     </a>"""
         )
@@ -245,11 +265,11 @@ def generate_html(results, articles):
   .container {{ max-width: 800px; margin: 0 auto; padding: 32px 24px; }}
   .item {{
     display: grid;
-    grid-template-columns: 40px 1fr 120px;
-    gap: 16px;
+    grid-template-columns: 36px 1fr;
+    gap: 14px;
     align-items: start;
-    padding: 20px;
-    margin-bottom: 12px;
+    padding: 18px 20px;
+    margin-bottom: 10px;
     background: #161b22;
     border: 1px solid #21262d;
     border-radius: 8px;
@@ -258,17 +278,40 @@ def generate_html(results, articles):
     transition: border-color 0.2s, background 0.2s;
   }}
   .item:hover {{ border-color: #58a6ff; background: #1c2129; }}
-  .num {{ color: #484f58; font-size: 14px; font-weight: 700; font-family: monospace; }}
-  .cn {{ font-size: 16px; color: #e6edf3; line-height: 1.5; font-weight: 500; }}
-  .en {{ font-size: 12px; color: #8b949e; margin-top: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }}
-  .meta {{ display: flex; align-items: center; justify-content: flex-end; }}
-  .source {{
+  .num {{
+    color: #30363d;
+    font-size: 13px;
+    font-weight: 700;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    padding-top: 2px;
+  }}
+  .cn {{ font-size: 15px; color: #e6edf3; line-height: 1.6; font-weight: 500; }}
+  .en {{
+    font-size: 12px;
+    color: #8b949e;
+    margin-top: 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }}
+  .info {{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+  }}
+  .source-tag {{
     font-size: 11px;
     color: #58a6ff;
-    background: #1f2a3a;
+    background: rgba(88,166,255,0.12);
     padding: 2px 8px;
     border-radius: 4px;
-    white-space: nowrap;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }}
+  .time {{
+    font-size: 11px;
+    color: #484f58;
   }}
   footer {{
     text-align: center;
@@ -279,9 +322,9 @@ def generate_html(results, articles):
     margin-top: 40px;
   }}
   @media (max-width: 600px) {{
-    .item {{ grid-template-columns: 30px 1fr; }}
-    .meta {{ display: none; }}
+    .item {{ padding: 14px 16px; }}
     .container {{ padding: 16px; }}
+    .cn {{ font-size: 14px; }}
   }}
 </style>
 </head>
